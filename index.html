@@ -78,8 +78,7 @@
 
                     <input type="submit" value="Submit">
                     <input type="button" value="Cancel" onclick="changeVisibility('welcome')">
-
-                    
+                   
                 </form>
             </div>
 
@@ -215,15 +214,29 @@
     password.onchange = validatePassword;
     cpassword.onkeyup = validatePassword;
 
+     // username Confirmation
+    var username = document.getElementById("username");
+    function validateUsername(){
+        if (username.value in users)
+            username.setCustomValidity("Username already exists.");
+        else
+            username.setCustomValidity("");
+    }
+    username.onchange = validateUsername;
+
     // Login & Register
-    let users= {"p": "testuser"};
+    var users= {};
+    users["p"] = "testuser";
     function registerUser(username, password){
+        event.preventDefault();
         users[username] = password;
         alert("Successfully registered.")
+        changeVisibility('welcome');
         return true;
     }
     function loginValidation(event, username, password){
         event.preventDefault();
+
         if ((!(users[username] === undefined)) && users[username] == password){
             changeVisibility('config');
             return true;
