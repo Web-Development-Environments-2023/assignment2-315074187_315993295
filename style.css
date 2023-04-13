@@ -1,0 +1,156 @@
+#header {
+    display: flex;
+    justify-content: left;
+    align-items: left;
+    background-color: black;
+    height: 77px;
+  }
+  
+  .headerDiv {
+    display: flex;
+    align-items: left;
+  }
+  
+  .headerDiv h1 {
+    margin-left: 10px;
+    color: white;
+  }
+
+  #canvas {
+    aspect-ratio: 16 / 9;
+    min-width: 1366px;
+    min-height: 768px;
+    width: min(100vw, calc((100vh - 200px) * 16 / 9));
+    height: calc(9 / 16 * 100% * var(--canvas-ratio));
+    max-height: calc(100vh - 200px);
+    background-color: #33333300;
+  }
+
+#main{
+    height: calc(100vh - 100px);
+}
+
+#footer {
+    position: fixed;
+    bottom: 0;
+    height: 1ch;
+    width: 100%;
+    background-color: rgb(208, 255, 0);
+    padding-bottom: 1ch;
+}
+
+
+#content{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url('Wallpaper.jpg');
+    height: calc(100vh - 100px);
+
+}
+
+#content div{
+    color: white;
+}
+
+#content div:not(#welcome)
+{
+    display: none;
+    align-items: center;
+}
+
+.Welcomebtn{
+    color: white;
+    font-size: 30px;
+    border: 0;
+    background: none;
+    box-shadow: none;
+    border-radius: 0px;
+    transition: background-color 0.8s ease-in-out;
+}
+
+.Welcomebtn:hover {
+    background-color: RGB(0,255,255,0.7);
+}
+
+.image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .image-container img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  #welcomebtn1 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+  #welcomebtn2 {
+    position: absolute;
+    top: 52%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+#about
+{
+    display: none;
+    position: fixed;
+    z-index: 5;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    overflow: hidden;
+    background-color: rgb(145, 229, 255);    
+}
+    #X{
+        float: right;
+        font-size: larger;
+        font-weight: bold;
+    }
+    #X:hover{
+        color: red;
+        cursor: pointer;
+    }
+
+
+#canvas {
+    border: 1px solid black;
+  }
+
+#Scoreboard{
+    width: 50ch;
+    height: 30%;
+    display: none;
+    position: fixed;
+    z-index: 5;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    overflow-y: scroll;
+    overflow-x: hidden;
+    background-color: rgb(0, 0, 0);
+    color: white;
+    background-image: url('Explosion.jpg');
+    background-size: cover;
+    
+}
+
+#Xscore{
+    float: right;
+    font-size: larger;
+    font-weight: bold;
+    color:white;
+    
+}
+#Xscore:hover{
+    color: red;
+    cursor: pointer;
+}

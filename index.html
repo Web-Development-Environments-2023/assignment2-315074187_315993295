@@ -1,0 +1,783 @@
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <title>The War Criminal</title>
+    
+</head>
+
+<body style="background-color: rgba(77, 96, 96, 0.278); overflow: hidden;">
+    <header id="header">
+        <div class="headerDiv">
+            <img src="Logo.png" style="background-size: contain; padding: 0%;">
+            <h1 >The War Criminal</h1>
+
+            <menu id="menu" style="background-color: none; position: absolute; right: 5%;">
+                <button type="button" id="aboutbt" onclick="showModal()">About</button>
+                <button type="button" onclick="changeVisibility('login')">Login</button>
+                <button type="button" onclick="changeVisibility('register')">Register</button>
+                <button type="button" onclick="changeVisibility('welcome')">Welcome Screen</button>
+            </menu>
+        </div>
+    </header>
+
+    <main id="main">
+        <content id="content">            
+            <div id="welcome" style="display: flex; flex-direction: column; align-items: center;">
+                <span style="display: flex; flex-direction: column; align-items: center;">
+                    <button type="submit" id="welcomebtn1" class="welcomebtn" onclick="changeVisibility('login')">Login</button>
+                    <button type="submit" id="welcomebtn2" class = "welcomebtn" onclick="changeVisibility('register')">Register</button>
+                </span>
+                <span class="image-container">
+                    <img src="SPACEWELCOME.PNG">
+                </span>
+            </div>
+            <div id="register">
+
+                <form onsubmit="registerUser(username.value, password.value)">
+                    <label for="username">Username:</label><br>
+                    <input type="text" required id="username" name="username"><br>
+
+                    <label for="password"> Password:</label><br>
+                    <input type="password"
+                    name="password"
+                    required id="password"
+                    pattern="(?=.*\d)(?=.*[A-Za-z]).{8,}"
+                    title="Must contain at least one number and one letter, and at least 8 or more characters."
+                    ><br>
+
+                    <label for="cpassword"> Confirm Password:</label><br>
+                    <input type="password"
+                    required id="cpassword"><br>
+
+                    <label for="fname">First name:</label><br>
+                    <input type="text" required id="fname" pattern="[A-Za-z]+" title="Can't include numbers."><br>
+
+                    <label for="lname">Last name:</label><br>
+                    <input type="text" required id="lname" pattern="[A-Za-z]+" title="Can't include numbers."><br/>
+
+                    <label for="email">Email:</label><br>
+                    <input type="email" required id="email"><br>
+
+                    <label for="date">Date of Birth:</label><br>
+                    <input type="date" required id="date"><br>
+
+                    <input type="submit" value="Submit">
+                    <input type="reset" value="Reset">
+                    <input type="button" value="Cancel" onclick="changeVisibility('welcome')">
+
+                </form>
+
+            </div>
+            <div id="login">
+                <form onsubmit="loginValidation(event, username.value, password.value)">
+                    <label for="username">Username:</label><br>
+                    <input type="text" required id="username" name="username"><br>
+
+                    <label for="password"> Password:</label><br>
+                    <input type="password" required id="password" name="password"><br>
+
+                    <input type="submit" value="Submit">
+                    <input type="button" value="Cancel" onclick="changeVisibility('welcome')">
+
+                    
+                </form>
+            </div>
+
+            <div id="config">
+                <form onsubmit="gameSettings(timelimit.value, shootlabel.innerHTML)">
+                    <label for="timelimit">Time Limit (Minutes):</label>
+                    <input type="number" id="timelimit" min="2" value="2" style="width: 10ch;"><br/><br/>
+                    
+                    <label for="shootchange">Shooting Button:</label><br/>
+                    <label for="shootchange" id="shootlabel">Space</label>
+                    <button id="shootchange">Assign key</button>
+                    <label for="shootchange" id="listeninglabel" style="visibility: hidden;">  Assigning key...</label><br/><br/>
+
+                    <script>
+                      function keydownListener(event) {
+                        event.preventDefault();                        
+                        if (event.keyCode !== 37 && event.keyCode !== 38 && event.keyCode !== 39 && event.keyCode !== 40) {                 
+                          document.getElementById("shootlabel").innerHTML = event.code;
+                          document.removeEventListener('keydown', keydownListener);
+                          document.getElementById("listeninglabel").style.visibility = "hidden";
+                        }
+                      }
+                    
+                      const shootchange = document.querySelector('#shootchange');
+                      shootchange.addEventListener('click', () => {
+                          event.preventDefault();
+                          document.getElementById("listeninglabel").style.visibility = "visible";
+                        document.addEventListener('keydown', keydownListener);
+                      });
+                    </script>
+                                    
+                    <input type="reset" value="Default Setting" onclick="shootlabel.innerHTML='Space'"><br/>
+                    <input type="submit" value="Play!">
+                    <input type="button" value="Logout" onclick="changeVisibility('welcome')">
+                </form>
+            </div>
+
+            <div id = "game">
+                <canvas id="canvas", width=1366 height =768></canvas>
+                <br>
+                <button id="restartButton">Restart</button>
+                <input type="button" value="Logout" onclick="changeVisibility('welcome')">
+                <input type="button" value="Toggle music" onclick="mutebtn();">
+                <script>
+                    function mutebtn(){
+                        if (audio.paused)
+                            audio.play()
+                        else
+                            audio.pause();
+                    }
+                </script>
+            </div>
+
+            <div class="About"id="about">
+                <span id="X"
+                onclick="(function(){
+                    closeModal()
+                })();"
+                >X</span><br/><br/>
+                <p>
+                    <font color = "black">Made by Nir Kursonsly & Daniel Zaslavsky from BGU.<br/>
+                    To play the game, use the arrow keys to move your spaceship, and spacebar to shoot.<br/>
+                    If spacebar is uncomfortable, you may change that button in the configurations menu.<br/>
+                    We added a timer in the canvas and here, in the About modal.<br/>
+                    We also added a mute and restart button right under the canvas.<br/>
+                    To contact us for technical support, we have our Information in the footer below.<br/>
+                    The song is from the Unreal Tournament OST - Go Down.
+                </p>
+                <label class="About">Game timer: </label><br/>
+                <label class="About" id="timerLabel">00:00</label><br/></font>
+            </div>
+            <div class="About" style="position: absolute; top: 0; height: 100%; width: 100%; z-index: 4; background-color: rgba(0, 0, 0, 0.3);"></div>
+
+            <div class="Scoreboard"id="scoreboard">
+                <span id="Xscore"
+                onclick="(function(){
+                    closeScore()
+                })();"
+                >X</span><br/><br/>
+                <h2 style="text-decoration: underline; padding-left: 2ch;">Scoreboard:</h2><br/>
+                <ol type="I" id="scorelist">
+
+                </ol>
+            </div>
+        </content>
+
+    </main>
+
+
+
+    <footer id="footer">
+        To contact the game developers, please email us at nirkor@post.bgu.ac.il & zasladan@post.bgu.ac.il. Thanks for playing :)
+    </footer>
+
+<script>
+    // Switching between "Div"s
+    var audio = new Audio('Unreal Tournament Soundtrack - Go Down.mp3');
+    audio.loop = true;
+    function changeVisibility(divShow){
+        var divs = document.getElementsByTagName("div");
+        for (var i = 0; i < divs.length; i++) {
+            if (divs[i].className == "headerDiv")
+                continue;
+            if (divs[i].id !== divShow) 
+                divs[i].style.display = "none";
+            else{
+                divs[i].style.display = "block";
+            }
+        }
+        if (divShow == 'game'){
+            audio.currentTime = 0;
+            audio.play();
+        }
+        else{
+            pause = true;
+            clearInterval(timerInterval); 
+            audio.pause();
+        }
+        if (divShow == 'welcome' || divShow == 'login'){
+            scoreboard = {};
+        }
+    };
+    
+    // Password Confirmation
+    var password = document.getElementById("password");
+    var cpassword = document.getElementById("cpassword");
+    function validatePassword(){
+        if (password.value != cpassword.value)
+            cpassword.setCustomValidity("Passwords do not match.");
+        else
+            cpassword.setCustomValidity("");
+    }
+    password.onchange = validatePassword;
+    cpassword.onkeyup = validatePassword;
+
+    // Login & Register
+    let users= {"p": "testuser"};
+    function registerUser(username, password){
+        users[username] = password;
+        alert("Successfully registered.")
+        return true;
+    }
+    function loginValidation(event, username, password){
+        event.preventDefault();
+        if ((!(users[username] === undefined)) && users[username] == password){
+            changeVisibility('config');
+            return true;
+        }
+        else{
+            alert("Username or password are incorrect.");
+            return false;
+        }
+    }
+
+    // Modal
+    function showModal(){
+        for (let element of document.getElementsByClassName("About"))
+            element.style.display="block";
+    }
+
+    function closeModal(){
+        for (let element of document.getElementsByClassName("About"))
+            element.style.display="none";
+    }
+
+
+    window.addEventListener("click", function(event) {
+        if (!(document.getElementById("about").contains(event.target) || document.getElementById("aboutbt").contains(event.target))) {
+            closeModal();
+        }
+    });
+    window.addEventListener("keydown", function(event) {
+        if (event.keyCode === 27) {
+            closeModal();
+        }
+    });
+
+</script>
+
+<script>
+    // Game setting
+    let shootbtn;
+    let gametimelimit;
+    function gameSettings(timelimit, shoot){  
+        shootbtn = shoot;
+        gametimelimit = timelimit;
+        event.preventDefault();
+        changeVisibility('game')
+        beginTimer();
+        document.getElementById("restartButton").click();
+        return true;
+    }
+
+    let timerLabel;
+    let secondsLeft;
+    let timerInterval;
+    let timeString = "--:--";
+    function beginTimer(){       
+        clearInterval(timerInterval); 
+        timerLabel = document.getElementById("timerLabel");
+        secondsLeft = gametimelimit * 60;
+        timerInterval = setInterval(updateTimer, 1000);
+    }
+
+    function updateTimer() {        
+        const minutes = Math.floor(secondsLeft / 60).toString().padStart(2, "0");
+        const seconds = (secondsLeft % 60).toString().padStart(2, "0");
+        timeString = `${minutes}:${seconds}`
+        timerLabel.textContent = timeString;
+
+        secondsLeft--;
+
+        if (secondsLeft < 0) {
+            clearInterval(timerInterval);
+            endGame(true);
+        }
+    }
+    
+
+    const restartButton = document.getElementById("restartButton");
+    restartButton.addEventListener("click", function() {
+        restartButton.blur();
+        // Reset player and alien positions
+        shipX = canvas.width/2 - shipWidth/2;
+        shipY = canvas.height - shipLength;
+        aliens = [];
+        for (let i = 0; i < alCol; i++) {
+            aliens[i] = [];
+            for (let j = 0; j < alRow; j++) {
+                let alienX = (j * (alWidth + alPad)) + alOffsetL;
+                let alienY = (i * (alLength + alPad)) + alOffsetU;
+                aliens[i][j] = { x: alienX, y: alienY, isAlive: true };
+            }
+        }
+        // Reset game state
+        lives = 3;
+        score = 0;
+        speeder = 1;
+        direction= 1;
+        directionY=1;
+        eBullets = [];
+        bullets = [];
+        pause = false;
+        speedCounter = 0;
+        clearInterval(speedIncrease);
+        speedIncrease = setInterval(IncreaseSpeed, 5000);
+        beginTimer();
+    });
+
+    // GAME ZONE
+    const canvas = document.getElementById("canvas");
+    //let canvasEnabled = false;
+    const ctx = canvas.getContext("2d");
+    let score = 0;
+
+
+    // ship = player battleship, al = alien battleship, bul = bullet
+    // Ship info
+    const shipWidth = 50;
+    const shipLength = 50;
+    let isMovingLeft = false;
+    let isMovingRight = false;
+    let isMovingUp = false;
+    let isMovingDown = false;
+    let pause = true;
+    var lives=3;
+
+    // Ship initial location
+    let shipX = canvas.width/2 - shipWidth/2;
+    let shipY = canvas.height - shipLength;
+    
+    //  Player Bullets
+    let bullets = [];
+    const bulWidth = 5;
+    const bulLength = 10;
+    let isShooting = false;
+
+    // Alien info
+    let aliens = [];
+    const alWidth = 50;
+    const alLength = 50;
+    const alRow = 5;
+    const alCol=4;
+    const alPad = 5;
+    const alOffsetU = 5;
+    const alOffsetL = 5;
+    const alienSpeedX = 0.8;
+    const alienSpeedY = alLength;
+    var speeder = 1;
+    var direction= 1;
+    var directionY=1;
+    
+    // Enemy Bullets
+    let eBullets = [];
+    const eBulWidth = 5;
+    const eBulLength = 10;
+    let EisShooting = false;
+
+
+
+    // Making the aliens
+    for (let i = 0; i < alCol; i++) {
+        aliens[i] = [];
+        for (let j = 0; j < alRow; j++) {
+          let alienX = (j * (alWidth + alPad)) + alOffsetL;
+          let alienY = (i * (alLength + alPad)) + alOffsetU;
+          aliens[i][j] = { x: alienX, y: alienY, isAlive: true };
+        }
+      }
+
+    // Drawing everything
+
+    let playerImage = new Image();
+    playerImage.src = "Player.png";
+    function drawShip() {
+        ctx.drawImage(playerImage, shipX, shipY, shipWidth, shipLength);
+    }
+
+    function drawBullets() {   
+        bullets.forEach((bullet) => {
+            ctx.beginPath();
+            ctx.rect(
+              bullet.x - bulWidth / 2,
+              bullet.y - bulLength,
+              bulWidth,
+              bulLength
+            );
+            ctx.fillStyle = "white";
+            ctx.fill();
+            ctx.closePath();
+          });
+    }
+
+    function drawEnemyBullets() {   
+        eBullets.forEach((bullet) => {
+            ctx.beginPath();
+            ctx.rect(
+              bullet.x - bulWidth / 2,
+              bullet.y - bulLength,
+              bulWidth,
+              bulLength
+            );
+            ctx.fillStyle = "red";
+            ctx.fill();
+            ctx.closePath();
+          });
+    }
+
+
+    function drawLives() {
+        ctx.fillStyle = "white";
+        ctx.font = "20px Arial";
+        ctx.fillText("Lives: " + lives, canvas.width - 100, 30);
+        }
+
+    function drawScore() {
+        ctx.fillStyle = "white";
+        ctx.font = "20px Arial";
+        ctx.fillText("score: " + score, 30, 30);
+        }
+
+    function drawTimer() {
+        ctx.fillStyle = "white";
+        ctx.font = "20px Arial";
+        ctx.fillText("Time left: " + timeString, 30, 50);
+        }
+
+    let alienImage1 = new Image();
+    alienImage1.src = "Enemy.png";
+    let alienImage2 = new Image();
+    alienImage2.src = "Enemy3.png";
+    let alienImage3 = new Image();
+    alienImage3.src = "Enemy2.png";
+    let alienImage4 = new Image();
+    alienImage4.src = "Enemy1.png";
+    function drawAliens() {
+        for (let i = 0; i < alCol; i++) {
+            for (let j = 0; j < alRow; j++) {
+                let alien = aliens[i][j];
+                if (alien.isAlive) {
+                    switch(i){
+                            case 0:
+                                ctx.drawImage(alienImage1, alien.x, alien.y, alWidth, alLength);
+                                break;
+                            case 1:
+                                ctx.drawImage(alienImage2, alien.x, alien.y, alWidth, alLength);
+                                break;
+                            case 2:
+                                ctx.drawImage(alienImage3, alien.x, alien.y, alWidth, alLength);
+                                break;
+                            case 3:
+                                ctx.drawImage(alienImage4, alien.x, alien.y, alWidth, alLength);
+                                break;
+                        }
+                    
+            }}
+        }
+    }
+
+    function draw() {
+        if(!pause){
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawShip();
+            drawBullets();
+            drawAliens();
+            drawEnemyBullets();
+            drawLives();
+            drawScore();
+            drawTimer();
+        }
+    }
+
+    // Updating positions
+    function updateShipPosition() {
+        if (isMovingLeft && shipX > 0) {
+          shipX -= 5;
+        }
+        if (isMovingRight && shipX < canvas.width - shipWidth) {
+          shipX += 5;
+        }
+        if (isMovingUp && shipY > canvas.height*0.6) {
+          shipY -= 5;
+        }
+        if (isMovingDown && shipY < canvas.height - shipLength) {
+          shipY += 5;
+        }
+      }
+
+    function updateBulletsPosition() {
+        bullets.forEach((bullet) => {
+            bullet.y -= 5;
+        });
+        bullets = bullets.filter((bullet) => bullet.y > 0);
+    }
+
+    function updateEnemyBulletsPosition() {
+        eBullets.forEach((bullet) => {
+            bullet.y += 5;
+        });
+        eBullets = eBullets.filter((bullet) => bullet.y >0 && bullet.y < canvas.height);
+    }
+
+    speedIncrease = setInterval(IncreaseSpeed, 5000);
+    let speedCounter = 0;
+    function IncreaseSpeed(){
+        speedCounter++;
+        if(speedCounter<=3){
+            speeder*=1.40;
+        }
+    }
+
+    function updateAliensPosition() {
+	let isAlienAlive = false;
+	aliens.forEach((column) => {
+		column.forEach((alien) => {
+			if (alien.isAlive) {
+				isAlienAlive = true;
+				alien.x += alienSpeedX*direction*speeder;
+				if (alien.x + alWidth + 20 > canvas.width || alien.x - alienSpeedX < 0) {
+					direction = -direction;
+					alien.x += alienSpeedX*direction*speeder;
+					for (let i = 0; i < alCol; i++) 
+						for (let j = 0; j < alRow; j++) 
+							aliens[i][j].y +=alienSpeedY*directionY;
+				}
+				if (alien.y + alLength + 20 > canvas.height*0.5) 
+					directionY = -directionY;
+				if (alien.y - alienSpeedY < -3) 
+					directionY = Math.abs(directionY);
+			}
+		});
+	});
+	if (!isAlienAlive)
+		endGame(true);
+}
+
+    function update() {
+        if(!pause){
+            updateShipPosition();
+            updateBulletsPosition();
+            updateAliensPosition();
+            updateEnemyBulletsPosition();
+            detectBulletCollisionWithAliens();
+            detectBulletCollisionWithPlayer();
+            draw();
+        }
+      }
+
+    // Event listeners
+    document.addEventListener("keydown", (event) => {
+        if (event.key === "ArrowLeft") {
+            isMovingLeft = true;
+        } else if (event.key === "ArrowRight") {
+            isMovingRight = true;
+        } else if (event.code === shootbtn) {
+            isShooting = true;
+        } else if (event.key === "ArrowUp") {
+            isMovingUp = true;
+        } else if (event.key === "ArrowDown") {
+            isMovingDown = true;
+        }
+    });
+
+
+    document.addEventListener("keyup", (event) => {
+        if (event.key === "ArrowLeft") {
+            isMovingLeft = false;
+        } else if (event.key === "ArrowRight") {
+            isMovingRight = false;
+        } else if (event.code === shootbtn) {
+            isShooting = false;
+        } else if (event.key === "ArrowUp") {
+            isMovingUp = false;
+        } else if (event.key === "ArrowDown") {
+            isMovingDown = false;
+        }
+    });
+
+    // Bullet loop
+    setInterval(() => {
+        if (isShooting) {
+            createBullet();
+        }
+        update();
+        }, 10);
+
+    // Enemy Bullet loop 
+    setInterval(() => {
+        createEnemyBullet();
+        update();
+    }, 8);
+
+    // Bullet functions
+    function createBullet() {
+        if (!bullets.find((bullet) => bullet.isAlive)) {
+            bullets.push({
+            x: shipX + shipWidth / 2,
+            y: shipY,
+            isAlive: true,
+            });
+        }
+    }
+
+    function detectBulletCollisionWithAliens() {
+        bullets.forEach((bullet) => {
+            for (let i = 0; i < alCol; i++) {
+                        for (let j = 0; j < alRow; j++) {
+                            let alien = aliens[i][j];
+                            if (alien.isAlive) {
+                                if (
+                                    bullet.x >= alien.x &&
+                                    bullet.x <= alien.x + alWidth &&
+                                    bullet.y >= alien.y &&
+                                    bullet.y <= alien.y + alLength
+                                ) {
+                                    AlienDeathSound();
+                                    alien.isAlive = false;
+                                    bullet.isAlive = false;
+                                    switch(i){
+                                        case 0:
+                                            score += 20;
+                                            break;
+                                        case 1:
+                                            score += 15;
+                                            break;
+                                        case 2:
+                                            score += 10;
+                                            break;
+                                        case 3:
+                                            score += 5;
+                                            break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+        })
+        bullets = bullets.filter((bullet) => bullet.isAlive);
+    }
+
+    function AlienDeathSound(){
+        new Audio('AlienDeath.mp3').play();
+    }
+
+    // Enemy Bullet functions
+    function createEnemyBullet() {
+        var randomEnemyIndexCol = Math.floor(Math.random() * aliens.length);
+        var randomEnemyIndexRow = Math.floor(Math.random() * aliens[0].length)
+        var enemy = aliens[randomEnemyIndexCol][randomEnemyIndexRow];
+        if(enemy.isAlive){
+        if (!(eBullets.find((bullet) => bullet.y < canvas.height*0.75))) {
+            eBullets.push({   
+            x: enemy.x + alWidth / 2,
+            y: enemy.y,
+            isAlive: true,
+            });
+        }}
+    }
+
+    function detectBulletCollisionWithPlayer() {
+        eBullets.forEach((bullet) => {
+            if (
+                    bullet.x >= shipX &&
+                    bullet.x <= shipX + shipWidth &&
+                    bullet.y >= shipY &&
+                    bullet.y <= shipY + shipLength &&
+                    bullet.isAlive
+                ){
+            bullet.isAlive = false;
+            playerDeathSound();
+            if(lives==1){
+                lives=0;
+                endGame(false);
+            }
+            else {                
+                lives--;
+                shipX = canvas.width/2 - shipWidth/2;
+                shipY = canvas.height - shipLength;
+            }}
+        })
+        eBullets = eBullets.filter((bullet) => bullet.isAlive);  
+    }
+
+    function playerDeathSound(){
+        new Audio('PlayerDeath.mp3').play();
+    }
+
+    function endGame(win){
+        if (!(pause)){
+            pause = true;
+            clearInterval(timerInterval);             
+            let text;
+            if (win)
+                if (score == 250)
+                    text = "Champion!";
+                else
+                    if (score < 100)
+                        text = "You can do better!";        
+                    else
+                        text = "Winner!";
+            else
+                text = "You lost!";
+            addScore(score, text);
+        }
+    }
+
+    var scoreboard = {};
+    function addScore(score, text){
+        // Adding
+        const date = new Date();
+        const options = { timeZone: 'Asia/Jerusalem' };
+        const dateString = date.toLocaleString('fr-FR', options);        
+        scoreboard[dateString] = score;
+
+        // Sorting
+        const scoreArray = Object.entries(scoreboard);
+        scoreArray.sort((a, b) => b[1] - a[1]);
+        scoreboard = Object.fromEntries(scoreArray);
+
+        // Displaying scoreboard:
+        ol = document.getElementById("scorelist");
+        ol.innerHTML = "";
+
+        for (let key in scoreboard){
+            li = document.createElement('li');
+            li.style = "background-color: rgba(77, 96, 96, 0.7); width: fit-content;";
+            li.textContent = `${scoreboard[key]} -- ${key}${((key == dateString)?' <---' + text: '')}`;
+            ol.appendChild(li);
+        }
+        showScore();
+    }
+    
+
+</script>
+
+<script>
+    // Modal
+    function showScore(){
+        for (let element of document.getElementsByClassName("Scoreboard"))
+            element.style.display="block";
+    }
+
+    function closeScore(){
+        for (let element of document.getElementsByClassName("Scoreboard"))
+            element.style.display="none";
+    }
+
+    window.onclick = function(event) {
+        if (!(document.getElementById("scoreboard").contains(event.target))) {
+            closeScore();
+        }
+    }
+    window.addEventListener("keydown", function(event) {
+        if (event.keyCode === 27) {
+            closeScore();
+        }
+    });    
+</script>
+</body>
+</html>
