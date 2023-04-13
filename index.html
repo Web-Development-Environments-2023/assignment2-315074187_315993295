@@ -559,7 +559,7 @@
 							aliens[i][j].y +=alienSpeedY*directionY;
 				}
 				if (alien.y + alLength + 20 > canvas.height*0.5) 
-					directionY = -directionY;
+                    			directionY = -Math.abs(directionY);
 				if (alien.y - alienSpeedY < -3) 
 					directionY = Math.abs(directionY);
 			}
