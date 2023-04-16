@@ -24,7 +24,7 @@
     <main id="main">
         <content id="content">            
             <div id="welcome" style="display: flex; flex-direction: column; align-items: center;">
-                Nir Korsunsky - 315993295<br/>Daniel Zaslavsky - 315074187
+                <span>Nir Korsunsky - 315993295<br/>Daniel Zaslavsky - 315074187</span>
                 <span style="display: flex; flex-direction: column; align-items: center;">
                     <button type="submit" id="welcomebtn1" class="welcomebtn" onclick="changeVisibility('login')">Login</button>
                     <button type="submit" id="welcomebtn2" class = "welcomebtn" onclick="changeVisibility('register')">Register</button>
@@ -189,7 +189,10 @@
             if (divs[i].id !== divShow) 
                 divs[i].style.display = "none";
             else{
-                divs[i].style.display = "block";
+                if (divShow == 'welcome')
+                    divs[i].style.display = "flex";
+                else
+                    divs[i].style.display = "block";
             }
         }
         if (divShow == 'game'){
